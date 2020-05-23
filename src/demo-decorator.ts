@@ -1,7 +1,7 @@
 export function Demo(
-  demoInstance: any,
+  demoInstance: Object,
   isDemoEnabled: () => boolean,
-): ClassDecorator {
+): <TFunction extends Function>(target: TFunction) => TFunction {
   return function x(target) {
     for (const propertyName of Object.getOwnPropertyNames(target.prototype)) {
       const descriptor = Object.getOwnPropertyDescriptor(
@@ -17,7 +17,7 @@ export function Demo(
         const originalMethod = descriptor.value;
         descriptor.value = function(...args: any[]) {
           if (isDemoEnabled()) {
-            if (demoInstance.hasOwnProperty(propertyName)) {
+            if (typeof demoInstance[propertyName] === 'function') {
               return demoInstance[propertyName](args);
             } else {
               return originalMethod.apply(this, args);
@@ -29,5 +29,7 @@ export function Demo(
         Object.defineProperty(target.prototype, propertyName, descriptor);
       }
     }
+
+    return target;
   };
 }

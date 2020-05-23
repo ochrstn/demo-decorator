@@ -1,2 +1,8 @@
-tsconfig.json
 src
+reports
+coverage
+tsconfig.json
+stryker.conf.js
+jest.config.js
+.prettierrc.js
+.eslintrc.js
