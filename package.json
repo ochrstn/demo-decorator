@@ -1,6 +1,6 @@
 {
   "name": "demo-decorator",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Conditionally replaces a class at runtime with another one",
   "license": "MIT",
   "author": {
