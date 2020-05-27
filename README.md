@@ -106,7 +106,7 @@ class SampleApi {
   })();
 ```
 
-### Example with decorator
+### Example without decorator
 
 ```ts
 // ...
