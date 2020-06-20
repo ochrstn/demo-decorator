@@ -15,10 +15,10 @@ export function Demo(
         }
 
         const originalMethod = descriptor.value;
-        descriptor.value = function(...args: any[]) {
+        descriptor.value = function (...args: any[]) {
           if (isDemoEnabled()) {
             if (typeof demoInstance[propertyName] === 'function') {
-              return demoInstance[propertyName](args);
+              return demoInstance[propertyName](...args);
             } else {
               return originalMethod.apply(this, args);
             }

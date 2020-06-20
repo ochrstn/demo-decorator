@@ -9,11 +9,11 @@ beforeEach(() => {
 describe('class decorated with a demo class instance', () => {
   // this is our mock
   class MockTestServiceCls {
-    add(_a: number, _b: number): number {
-      return 42;
+    add(a: number, b: number): number {
+      return a - b;
     }
-    reverse(_x: string): string {
-      return 'miau';
+    reverse(x: string): string {
+      return x;
     }
   }
 
@@ -24,10 +24,7 @@ describe('class decorated with a demo class instance', () => {
       return a + b;
     }
     reverse(x: string): string {
-      return x
-        .split('')
-        .reverse()
-        .join('');
+      return x.split('').reverse().join('');
     }
 
     alwaysOriginal(): string {
@@ -86,7 +83,7 @@ describe('class decorated with a demo class instance', () => {
 
       const result = MockableTestService.add(2, 3);
 
-      expect(result).toBe(42);
+      expect(result).toBe(-1);
       expect(mockMockedTestServiceAdd).toBeCalledTimes(1);
     });
 
@@ -99,7 +96,7 @@ describe('class decorated with a demo class instance', () => {
 
       const result = MockableTestService.reverse('hola');
 
-      expect(result).toBe('miau');
+      expect(result).toBe('hola');
       expect(mockMockedTestServiceReverse).toBeCalledTimes(1);
     });
 
@@ -200,11 +197,11 @@ describe('class decorated with a demo object', () => {
 describe('demo without decorator syntax', () => {
   // this is our mock
   class MockTestServiceCls {
-    add(_a: number, _b: number): number {
-      return 42;
+    add(a: number, b: number): number {
+      return a - b;
     }
-    reverse(_x: string): string {
-      return 'miau';
+    reverse(x: string): string {
+      return x;
     }
   }
 
@@ -214,10 +211,7 @@ describe('demo without decorator syntax', () => {
       return a + b;
     }
     reverse(x: string): string {
-      return x
-        .split('')
-        .reverse()
-        .join('');
+      return x.split('').reverse().join('');
     }
 
     alwaysOriginal(): string {
@@ -280,7 +274,7 @@ describe('demo without decorator syntax', () => {
 
       const result = MockedTestService.add(2, 3);
 
-      expect(result).toBe(42);
+      expect(result).toBe(-1);
       expect(mockMockedTestServiceAdd).toBeCalledTimes(1);
     });
 
@@ -293,7 +287,7 @@ describe('demo without decorator syntax', () => {
 
       const result = MockedTestService.reverse('hola');
 
-      expect(result).toBe('miau');
+      expect(result).toBe('hola');
       expect(mockMockedTestServiceReverse).toBeCalledTimes(1);
     });
 
@@ -310,4 +304,25 @@ describe('demo without decorator syntax', () => {
       expect(mockTestServiceAlwaysOriginal).toBeCalledTimes(1);
     });
   });
+});
+
+describe('without decorator', () => {
+  const mock = {
+    add(a: number, b: number) {
+      return a - b;
+    },
+  };
+
+  class X {
+    public add(a: number, b: number) {
+      return a + b;
+    }
+  }
+
+  let demoActive = true;
+  const instance = new (Demo(mock, () => demoActive)(X))();
+
+  expect(instance.add(2, 3)).toBe(-1);
+  demoActive = false;
+  expect(instance.add(2, 3)).toBe(5);
 });
